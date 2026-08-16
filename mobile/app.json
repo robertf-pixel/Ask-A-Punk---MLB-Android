@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Ask A Punk - MLB",
+    "slug": "ask-a-punk-mlb",
+    "scheme": "vibecode",
+    "version": "1.13",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vibecode.askapunk-mlb-t2bzuk",
+      "buildNumber": "12",
+      "infoPlist": {}
+    },
+    "android": {
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./icon.png"
+  }
+}

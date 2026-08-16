@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id            Int       @id
+  title         String
+  slug          String
+  description   String?
+  startDatetime DateTime
+  endDatetime   DateTime?
+  placeName     String?
+  placeAddress  String?
+  imageUrl      String?
+  tags          String    @default("[]") // JSON array stored as string
+  ticketUrl     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model SyncStatus {
+  id           Int      @id @default(autoincrement())
+  lastSyncedAt DateTime
+  status       String   // "success" | "failed" | "in_progress"
+  eventCount   Int      @default(0)
+  errorMessage String?
+  createdAt    DateTime @default(now())
+}
