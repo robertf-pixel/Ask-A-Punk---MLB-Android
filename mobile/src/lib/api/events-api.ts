@@ -5,10 +5,14 @@ import {
   SyncStatus,
   SyncTriggerResponse,
 } from '@/lib/types/events';
+import type { Locale } from '@/lib/state/locale-store';
 
 // Fetch all events from the backend API
-export async function fetchEvents(): Promise<BackendEvent[]> {
-  const events = await api.get<BackendEvent[]>('/api/events');
+export async function fetchEvents(locale: Locale): Promise<BackendEvent[]> {
+  const events = await api.get<BackendEvent[]>(
+    `/api/events?locale=${locale}`
+  );
+
   return events || [];
 }
 

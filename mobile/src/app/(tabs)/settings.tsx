@@ -14,6 +14,7 @@ import { RefreshCw, Calendar, Clock, CheckCircle, XCircle, Info, Shield, Mail, C
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { fetchSyncStatus, triggerSync, formatSyncDate } from '@/lib/api/events-api';
 import { SyncStatus } from '@/lib/types/events';
+import { useLocaleStore } from '@/lib/state/locale-store';
 
 const ACCENT_COLOR = '#FF6B35';
 
@@ -111,6 +112,8 @@ function SettingsRow({
 }
 
 export default function SettingsScreen() {
+  const locale = useLocaleStore((state) => state.locale);
+  const setLocale = useLocaleStore((state) => state.setLocale);
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
   const router = useRouter();

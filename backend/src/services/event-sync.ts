@@ -1,4 +1,5 @@
 import { prisma } from "../db";
+import { fetch } from 'undici';
 
 // Gancio API types based on actual response
 interface GancioMedia {
@@ -30,15 +31,22 @@ interface GancioEvent {
   place: GancioPlace;
 }
 
+type Locale = 'melbourne' | 'sydney';
+
 const GANCIO_API_URL = "https://melbourne.askapunk.net/api/events";
-const GANCIO_BASE_URL = "https://melbourne.askapunk.net";
+const GANCIO_BASE_URLS: Record<Locale, string> = {
+  melbourne: 'https://melbourne.askapunk.net',
+  sydney: 'https://sydney.askapunk.au',
+};
 
 /**
  * Fetches events from the Gancio API (both upcoming and past)
  */
-async function fetchEventsFromGancio(): Promise<GancioEvent[]> {
+async function fetchEventsFromGancio(locale: Locale): Promise<GancioEvent[]> {
+    const baseUrl = GANCIO_BASE_URLS[locale];
+  const apiUrl = `${baseUrl}/api/events`;
   // Fetch upcoming events (default behavior, no params)
-  const upcomingResponse = await fetch(GANCIO_API_URL);
+  const upcomingResponse = await fetch(apiUrl);
   if (!upcomingResponse.ok) {
     throw new Error(`Failed to fetch upcoming events: ${upcomingResponse.status} ${upcomingResponse.statusText}`);
   }
@@ -46,7 +54,7 @@ async function fetchEventsFromGancio(): Promise<GancioEvent[]> {
 
   // Fetch past events using start=0 and end=current unix timestamp
   const nowUnix = Math.floor(Date.now() / 1000);
-  const pastUrl = `${GANCIO_API_URL}?start=0&end=${nowUnix}`;
+  const pastUrl = `${apiUrl}?start=0&end=${nowUnix}`;
   const pastResponse = await fetch(pastUrl);
   if (!pastResponse.ok) {
     throw new Error(`Failed to fetch past events: ${pastResponse.status} ${pastResponse.statusText}`);
@@ -86,10 +94,13 @@ function extractTicketUrl(onlineLocations: string[] | string): string | null {
 /**
  * Constructs the full image URL from media data
  */
-function getImageUrl(media: GancioMedia[]): string | null {
+function getImageUrl(
+  media: GancioMedia[],
+  baseUrl: string
+): string | null {
   const firstMedia = media[0];
   if (media.length > 0 && firstMedia && firstMedia.url) {
-    return `${GANCIO_BASE_URL}/media/thumb/${firstMedia.url}`;
+    return `${baseUrl}/media/thumb/${firstMedia.url}`;
   }
   return null;
 }
@@ -97,7 +108,9 @@ function getImageUrl(media: GancioMedia[]): string | null {
 /**
  * Syncs events from the Gancio API to the local database
  */
-export async function syncEvents(): Promise<{ success: boolean; eventCount: number; error?: string }> {
+export async function syncEvents(
+  locale: Locale
+): Promise<{ success: boolean; eventCount: number; error?: string }> {
   // Create a sync status entry to mark sync in progress
   const syncStatus = await prisma.syncStatus.create({
     data: {
@@ -109,7 +122,7 @@ export async function syncEvents(): Promise<{ success: boolean; eventCount: numb
 
   try {
     // Fetch events from Gancio API
-    const gancioEvents = await fetchEventsFromGancio();
+    const gancioEvents = await fetchEventsFromGancio(locale);
     const gancioEventIds = gancioEvents.map((e) => e.id);
 
     // Upsert each event
@@ -124,7 +137,7 @@ export async function syncEvents(): Promise<{ success: boolean; eventCount: numb
           endDatetime: event.end_datetime ? new Date(event.end_datetime * 1000) : null,
           placeName: event.place?.name || null,
           placeAddress: event.place?.address || null,
-          imageUrl: getImageUrl(event.media),
+          imageUrl: getImageUrl(event.media, GANCIO_BASE_URLS[locale]),
           tags: JSON.stringify(event.tags),
           ticketUrl: extractTicketUrl(event.online_locations),
           updatedAt: new Date(),
@@ -138,7 +151,7 @@ export async function syncEvents(): Promise<{ success: boolean; eventCount: numb
           endDatetime: event.end_datetime ? new Date(event.end_datetime * 1000) : null,
           placeName: event.place?.name || null,
           placeAddress: event.place?.address || null,
-          imageUrl: getImageUrl(event.media),
+          imageUrl: getImageUrl(event.media, GANCIO_BASE_URLS[locale]),
           tags: JSON.stringify(event.tags),
           ticketUrl: extractTicketUrl(event.online_locations),
         },
@@ -212,12 +225,12 @@ export async function isDataStale(hours: number = 12): Promise<boolean> {
 /**
  * Syncs events if data is stale
  */
-export async function syncIfStale(): Promise<void> {
+export async function syncIfStale(locale: Locale): Promise<void> {
   const stale = await isDataStale(12);
 
   if (stale) {
     console.log("[EventSync] Data is stale, starting sync...");
-    await syncEvents();
+    await syncEvents(locale);
   } else {
     console.log("[EventSync] Data is fresh, skipping sync");
   }

@@ -36,6 +36,7 @@ import { BackendEvent, FormattedEvent } from '@/lib/types/events';
 import { cn } from '@/lib/cn';
 import { useSavedEventsStore } from '@/lib/state/saved-events-store';
 import { ClickableTag } from '@/components/ClickableTag';
+import { Locale, useLocaleStore } from '@/lib/state/locale-store';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ACCENT_COLOR = '#FF6B35';
@@ -277,11 +278,16 @@ function EventCard({
 function Header({
   activeTab,
   onTabChange,
+  locale,
+  onLocaleChange,
 }: {
   activeTab: 'upcoming' | 'past';
   onTabChange: (tab: 'upcoming' | 'past') => void;
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
 }) {
   const insets = useSafeAreaInsets();
+  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
 
   return (
     <View
@@ -296,9 +302,56 @@ function Header({
           >
             ASK A PUNK
           </Text>
-          <Text className="text-neutral-500 text-xs font-medium uppercase tracking-wider">
-            Melbourne Events
-          </Text>
+          <View style={{ position: 'relative' }}>
+            <Pressable onPress={() => setLocaleMenuOpen(!localeMenuOpen)}>
+              <Text className="text-neutral-400 text-sm font-bold">
+                {locale.toUpperCase()} EVENTS ▼
+              </Text>
+            </Pressable>
+
+            {localeMenuOpen && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 24,
+                  left: 0,
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: 10,
+                  minWidth: 150,
+                  paddingVertical: 4,
+                  zIndex: 999,
+                }}
+              >
+                {[
+                  { value: 'melbourne', label: 'Melbourne' },
+                  { value: 'sydney', label: 'Sydney' },
+                  { value: 'wollongong', label: 'Wollongong' },
+                  { value: 'canberra', label: 'Canberra' },
+                ].map((item) => (
+                  <Pressable
+                    key={item.value}
+                    onPress={() => {
+                      onLocaleChange(item.value as Locale);
+                      setLocaleMenuOpen(false);
+                    }}
+                    style={{
+                      paddingHorizontal: 12,
+                      paddingVertical: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: locale === item.value ? ACCENT_COLOR : '#aaa',
+                        fontWeight: '600',
+                      }}
+                    >
+                      {item.label}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            )}
+          </View>
           <Text className="text-neutral-600 text-[10px] font-medium tracking-wide mt-0.5">
             app created by life.lair.regret. records
           </Text>
@@ -511,6 +564,14 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
 }
 
 export default function EventsFeedScreen() {
+  const locale = useLocaleStore((state) => state.locale);
+  const setLocale = useLocaleStore((state) => state.setLocale);
+  const LOCALES: { value: Locale; label: string }[] = [
+    { value: 'melbourne', label: 'Melbourne' },
+    { value: 'sydney', label: 'Sydney' },
+    { value: 'wollongong', label: 'Wollongong' },
+    { value: 'canberra', label: 'Canberra' },
+  ];
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
@@ -534,14 +595,15 @@ export default function EventsFeedScreen() {
     initSavedEvents();
   }, [initSavedEvents]);
 
+
   const {
     data: events,
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryKey: ['events', locale],
+    queryFn: () => fetchEvents(locale),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -707,7 +769,12 @@ export default function EventsFeedScreen() {
 
   return (
     <View className="flex-1 bg-black">
-      <Header activeTab={activeTab} onTabChange={handleTabChange} />
+      <Header
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        locale={locale}
+        onLocaleChange={setLocale}
+      />
 
       {isLoading ? (
         <LoadingState />
