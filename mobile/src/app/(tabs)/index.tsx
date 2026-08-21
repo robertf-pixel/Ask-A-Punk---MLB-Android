@@ -303,7 +303,9 @@ function Header({
             ASK A PUNK
           </Text>
           <View style={{ position: 'relative' }}>
-            <Pressable onPress={() => setLocaleMenuOpen(!localeMenuOpen)}>
+            <Pressable onPress={() => setLocaleMenuOpen(!localeMenuOpen)}
+            className="border border-neutral-600 bg-neutral-900 px-3 py-2 rounded-lg">
+          
               <Text className="text-neutral-400 text-sm font-bold">
                 {locale.toUpperCase()} EVENTS ▼
               </Text>

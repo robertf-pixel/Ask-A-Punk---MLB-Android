@@ -12,13 +12,13 @@ export async function initScheduler(): Promise<void> {
   console.log("[Scheduler] Initializing event sync scheduler...");
 
   // Run sync on startup if data is stale
-  await syncIfStale();
+  await syncIfStale('melbourne');
 
   // Schedule sync every 12 hours (at 00:00 and 12:00)
   // Cron expression: "0 0,12 * * *" means at minute 0 of hours 0 and 12
   scheduledTask = cron.schedule("0 0,12 * * *", async () => {
     console.log("[Scheduler] Running scheduled event sync...");
-    await syncEvents();
+    await syncEvents('melbourne');
   });
 
   console.log("[Scheduler] Event sync scheduled to run every 12 hours");
@@ -40,5 +40,5 @@ export function stopScheduler(): void {
  */
 export async function triggerManualSync(): Promise<{ success: boolean; eventCount: number; error?: string }> {
   console.log("[Scheduler] Manual sync triggered");
-  return syncEvents();
+  return syncEvents('melbourne');
 }

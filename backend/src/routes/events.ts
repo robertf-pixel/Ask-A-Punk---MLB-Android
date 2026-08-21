@@ -9,11 +9,15 @@ const eventsRouter = new Hono();
  * GET /api/events - Return all events (upcoming and past)
  */
 eventsRouter.get("/", async (c) => {
+  const locale = c.req.query("locale") ?? "melbourne";
+
+  console.log("EVENTS REQUESTED FOR:", locale);
+
   const events = await prisma.event.findMany({
+    where: { locale },
     orderBy: { startDatetime: "asc" },
   });
 
-  // Parse tags JSON for each event
   const eventsWithParsedTags = events.map((event) => ({
     ...event,
     tags: JSON.parse(event.tags) as string[],

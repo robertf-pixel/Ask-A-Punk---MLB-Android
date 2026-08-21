@@ -43,7 +43,7 @@ const GANCIO_BASE_URLS: Record<Locale, string> = {
  * Fetches events from the Gancio API (both upcoming and past)
  */
 async function fetchEventsFromGancio(locale: Locale): Promise<GancioEvent[]> {
-    const baseUrl = GANCIO_BASE_URLS[locale];
+  const baseUrl = GANCIO_BASE_URLS[locale];
   const apiUrl = `${baseUrl}/api/events`;
   // Fetch upcoming events (default behavior, no params)
   const upcomingResponse = await fetch(apiUrl);
@@ -128,7 +128,12 @@ export async function syncEvents(
     // Upsert each event
     for (const event of gancioEvents) {
       await prisma.event.upsert({
-        where: { id: event.id },
+        where: {
+          locale_gancioId: {
+            locale,
+            gancioId: event.id,
+          },
+        },
         update: {
           title: event.title,
           slug: event.slug,
@@ -141,9 +146,11 @@ export async function syncEvents(
           tags: JSON.stringify(event.tags),
           ticketUrl: extractTicketUrl(event.online_locations),
           updatedAt: new Date(),
+          locale,
         },
         create: {
-          id: event.id,
+          gancioId: event.id,
+          locale,
           title: event.title,
           slug: event.slug,
           description: null,
@@ -161,7 +168,8 @@ export async function syncEvents(
     // Delete events that are no longer in the API (cleanup old events)
     const deletedCount = await prisma.event.deleteMany({
       where: {
-        id: {
+        locale,
+        gancioId: {
           notIn: gancioEventIds,
         },
       },
