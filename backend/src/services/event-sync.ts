@@ -31,12 +31,17 @@ interface GancioEvent {
   place: GancioPlace;
 }
 
-type Locale = 'melbourne' | 'sydney';
+export type Locale =
+  | 'melbourne'
+  | 'sydney'
+  | 'wollongong'
+  | 'canberra';
 
-const GANCIO_API_URL = "https://melbourne.askapunk.net/api/events";
-const GANCIO_BASE_URLS: Record<Locale, string> = {
+const GANCIO_BASE_URLS: Partial<Record<Locale, string>> = {
   melbourne: 'https://melbourne.askapunk.net',
   sydney: 'https://sydney.askapunk.au',
+  wollongong: 'https://wollongong.askapunk.au',
+  canberra: 'https://canberra.askapunk.au',
 };
 
 /**
@@ -44,6 +49,9 @@ const GANCIO_BASE_URLS: Record<Locale, string> = {
  */
 async function fetchEventsFromGancio(locale: Locale): Promise<GancioEvent[]> {
   const baseUrl = GANCIO_BASE_URLS[locale];
+  if (!baseUrl) {
+  throw new Error(`No Gancio URL configured for locale: ${locale}`);
+  }
   const apiUrl = `${baseUrl}/api/events`;
   // Fetch upcoming events (default behavior, no params)
   const upcomingResponse = await fetch(apiUrl);
@@ -110,7 +118,13 @@ function getImageUrl(
  */
 export async function syncEvents(
   locale: Locale
+  
 ): Promise<{ success: boolean; eventCount: number; error?: string }> {
+  const baseUrl = GANCIO_BASE_URLS[locale];
+
+if (!baseUrl) {
+  throw new Error(`No Gancio URL configured for locale: ${locale}`);
+}
   // Create a sync status entry to mark sync in progress
   const syncStatus = await prisma.syncStatus.create({
     data: {
@@ -142,7 +156,7 @@ export async function syncEvents(
           endDatetime: event.end_datetime ? new Date(event.end_datetime * 1000) : null,
           placeName: event.place?.name || null,
           placeAddress: event.place?.address || null,
-          imageUrl: getImageUrl(event.media, GANCIO_BASE_URLS[locale]),
+          imageUrl: getImageUrl(event.media, baseUrl),
           tags: JSON.stringify(event.tags),
           ticketUrl: extractTicketUrl(event.online_locations),
           updatedAt: new Date(),
@@ -158,7 +172,7 @@ export async function syncEvents(
           endDatetime: event.end_datetime ? new Date(event.end_datetime * 1000) : null,
           placeName: event.place?.name || null,
           placeAddress: event.place?.address || null,
-          imageUrl: getImageUrl(event.media, GANCIO_BASE_URLS[locale]),
+          imageUrl: getImageUrl(event.media, baseUrl),
           tags: JSON.stringify(event.tags),
           ticketUrl: extractTicketUrl(event.online_locations),
         },

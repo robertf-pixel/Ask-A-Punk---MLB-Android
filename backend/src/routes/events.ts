@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { prisma } from "../db";
 import { getLastSyncStatus } from "../services/event-sync";
 import { triggerManualSync } from "../services/scheduler";
+import type { Locale } from "../services/event-sync";
 
 const eventsRouter = new Hono();
 
@@ -56,7 +57,10 @@ eventsRouter.get("/status", async (c) => {
  * POST /api/events/sync - Manually trigger sync
  */
 eventsRouter.post("/sync", async (c) => {
-  const result = await triggerManualSync();
+  const locale =
+    (c.req.query("locale") ?? "melbourne") as Locale;
+
+  const result = await triggerManualSync(locale);
 
   if (result.success) {
     return c.json({

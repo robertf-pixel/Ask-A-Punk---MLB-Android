@@ -38,7 +38,13 @@ export function stopScheduler(): void {
 /**
  * Manually trigger a sync
  */
-export async function triggerManualSync(): Promise<{ success: boolean; eventCount: number; error?: string }> {
-  console.log("[Scheduler] Manual sync triggered");
-  return syncEvents('melbourne');
+export async function triggerManualSync(
+  locale: 'melbourne' | 'sydney' | 'wollongong' | 'canberra'
+): Promise<{
+  success: boolean;
+  eventCount: number;
+  error?: string;
+}> {
+  console.log(`[Scheduler] Manual sync triggered for ${locale}`);
+  return syncEvents(locale);
 }

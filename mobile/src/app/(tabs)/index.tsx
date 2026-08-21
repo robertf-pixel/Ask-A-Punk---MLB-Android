@@ -611,7 +611,7 @@ export default function EventsFeedScreen() {
 
   // Mutation to sync with website feed
   const syncMutation = useMutation({
-    mutationFn: triggerSync,
+    mutationFn: () => triggerSync(locale),
     onSuccess: () => {
       // Invalidate cache to force fresh fetch from server
       queryClient.invalidateQueries({ queryKey: ['events'] });

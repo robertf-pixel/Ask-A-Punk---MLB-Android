@@ -27,8 +27,14 @@ export async function fetchSyncStatus(): Promise<SyncStatus> {
 }
 
 // Trigger manual sync
-export async function triggerSync(): Promise<SyncTriggerResponse> {
-  const response = await api.post<SyncTriggerResponse>('/api/events/sync', {});
+export async function triggerSync(
+  locale: Locale
+): Promise<SyncTriggerResponse> {
+  const response = await api.post<SyncTriggerResponse>(
+    `/api/events/sync?locale=${locale}`,
+    {}
+  );
+
   return response;
 }
 
