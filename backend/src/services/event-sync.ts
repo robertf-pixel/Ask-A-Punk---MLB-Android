@@ -106,7 +106,7 @@ function getImageUrl(
   media: GancioMedia[],
   baseUrl: string
 ): string | null {
-  const firstMedia = media[0];
+  const firstMedia = media?.[0];
   if (media.length > 0 && firstMedia && firstMedia.url) {
     return `${baseUrl}/media/thumb/${firstMedia.url}`;
   }
