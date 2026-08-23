@@ -13,6 +13,16 @@ export async function fetchEvents(locale: Locale): Promise<BackendEvent[]> {
     `/api/events?locale=${locale}`
   );
 
+  console.log(
+  `Events returned for ${locale}:`,
+  events?.map(event => ({
+    id: event.id,
+    title: event.title,
+  }))
+);
+
+console.log(`First ${locale} event:`, events?.[0]);
+
   return events || [];
 }
 

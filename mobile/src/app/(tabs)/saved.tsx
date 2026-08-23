@@ -21,9 +21,9 @@ import * as Haptics from 'expo-haptics';
 import { FormattedEvent } from '@/lib/types/events';
 import { useSavedEventsStore } from '@/lib/state/saved-events-store';
 import { ClickableTag } from '@/components/ClickableTag';
+import { Locale, useLocaleStore } from '@/lib/state/locale-store';
+import { useLocationTheme } from '@/lib/theme/location-theme';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const ACCENT_COLOR = '#FF6B35';
 
 function SavedEventCard({
   event,
@@ -36,6 +36,9 @@ function SavedEventCard({
   onPress: () => void;
   onRemovePress: () => void;
 }) {
+  const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const heartScale = useSharedValue(1);
 
   const heartAnimatedStyle = useAnimatedStyle(() => ({
@@ -199,6 +202,8 @@ function Header({
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
 }) {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
 
   return (

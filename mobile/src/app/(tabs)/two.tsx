@@ -37,8 +37,9 @@ import {
   useSavedSearchesStore,
   SavedSearch,
 } from '@/lib/state/saved-searches-store';
+import { useLocationTheme } from '@/lib/theme/location-theme';
+import { useLocaleStore } from '@/lib/state/locale-store';
 
-const ACCENT_COLOR = '#FF6B35';
 type TabType = 'search' | 'saved';
 
 function Header({
@@ -58,6 +59,8 @@ function Header({
   onSaveSearch: () => void;
   isSearchSaved: boolean;
 }) {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
 
   return (
@@ -176,6 +179,8 @@ function EmptySearchState({ searchQuery }: { searchQuery: string }) {
 }
 
 function LoadingState() {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   return (
     <View className="flex-1 items-center justify-center">
       <ActivityIndicator size="large" color={ACCENT_COLOR} />
@@ -196,6 +201,8 @@ function SavedSearchSection({
   onDelete: () => void;
   onTapSearch: (query: string) => void;
 }) {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const matchingEvents = useMemo(
     () => filterEvents(allEvents, savedSearch.query),
     [allEvents, savedSearch.query]
@@ -307,10 +314,10 @@ export default function SearchScreen() {
       setActiveTab('search');
     }
   }, [tag]);
-
+  const locale = useLocaleStore(state => state.locale);
   const { data: events, isLoading } = useQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(locale),
     staleTime: 5 * 60 * 1000,
   });
 

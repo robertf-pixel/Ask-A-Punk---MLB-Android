@@ -34,6 +34,7 @@ import { GancioEvent, FormattedEvent, GANCIO_BASE_URL } from '@/lib/types/events
 import { useSavedEventsStore } from '@/lib/state/saved-events-store';
 import { ClickableTag } from '@/components/ClickableTag';
 import { buildGoogleCalendarUrl } from '@/lib/calendar-utils';
+import { Locale, useLocaleStore } from '@/lib/state/locale-store';
 
 const ACCENT_COLOR = '#FF6B35';
 
@@ -81,6 +82,7 @@ function DetailRow({
 }
 
 export default function EventDetailModal() {
+  const locale = useLocaleStore((state) => state.locale);
   const { eventId } = useLocalSearchParams<{ eventId: string }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -95,7 +97,7 @@ export default function EventDetailModal() {
 
   const { data: events, isLoading } = useQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(locale),
     staleTime: 5 * 60 * 1000,
   });
 

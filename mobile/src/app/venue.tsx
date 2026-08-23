@@ -16,10 +16,12 @@ import { X, MapPin, Calendar } from 'lucide-react-native';
 import { fetchEvents, formatEvent, sortEventsByDate } from '@/lib/api/events-api';
 import { FormattedEvent } from '@/lib/types/events';
 import { CompactEventCard } from '@/components/CompactEventCard';
+import { Locale, useLocaleStore } from '@/lib/state/locale-store';
 
 const ACCENT_COLOR = '#FF6B35';
 
 export default function VenuePage() {
+  const locale = useLocaleStore((state) => state.locale);
   const { venueName, venueAddress } = useLocalSearchParams<{
     venueName: string;
     venueAddress?: string;
@@ -29,7 +31,7 @@ export default function VenuePage() {
 
   const { data: events, isLoading } = useQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(locale),
     staleTime: 5 * 60 * 1000,
   });
 

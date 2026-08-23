@@ -37,9 +37,9 @@ import { cn } from '@/lib/cn';
 import { useSavedEventsStore } from '@/lib/state/saved-events-store';
 import { ClickableTag } from '@/components/ClickableTag';
 import { Locale, useLocaleStore } from '@/lib/state/locale-store';
+import { useLocationTheme } from '@/lib/theme/location-theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const ACCENT_COLOR = '#FF6B35';
 
 const DATE_FILTERS = ['Today', 'This Week', 'This Month'] as const;
 type DateFilter = typeof DATE_FILTERS[number];
@@ -59,6 +59,8 @@ function EventCard({
   onVenuePress: () => void;
   isSaved: boolean;
 }) {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const heartScale = useSharedValue(1);
   const toastOpacity = useSharedValue(0);
   const [showToast, setShowToast] = useState(false);
@@ -286,6 +288,8 @@ function Header({
   locale: Locale;
   onLocaleChange: (locale: Locale) => void;
 }) {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
   const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
 
@@ -304,8 +308,8 @@ function Header({
           </Text>
           <View style={{ position: 'relative' }}>
             <Pressable onPress={() => setLocaleMenuOpen(!localeMenuOpen)}
-            className="border border-neutral-600 bg-neutral-900 px-3 py-2 rounded-lg">
-          
+              className="border border-neutral-600 bg-neutral-900 px-3 py-2 rounded-lg">
+
               <Text className="text-neutral-400 text-sm font-bold">
                 {locale.toUpperCase()} EVENTS ▼
               </Text>
@@ -414,6 +418,8 @@ function FilterChip({
   active: boolean;
   onPress: () => void;
 }) {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   return (
     <Pressable
       onPress={onPress}
@@ -459,6 +465,8 @@ function FilterBar({
   onClearFilters: () => void;
   hasActiveFilters: boolean;
 }) {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   return (
     <View className="bg-black pb-2">
       <ScrollView
@@ -537,6 +545,8 @@ function EmptyState() {
 }
 
 function LoadingState() {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   return (
     <View className="flex-1 items-center justify-center">
       <ActivityIndicator size="large" color={ACCENT_COLOR} />
@@ -546,6 +556,8 @@ function LoadingState() {
 }
 
 function ErrorState({ onRetry }: { onRetry: () => void }) {
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   return (
     <View className="flex-1 items-center justify-center px-8">
       <Text className="text-red-500 text-xl font-bold mb-2">
@@ -614,7 +626,9 @@ export default function EventsFeedScreen() {
     mutationFn: () => triggerSync(locale),
     onSuccess: () => {
       // Invalidate cache to force fresh fetch from server
-      queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({
+        queryKey: ['events', locale],
+      });
     },
   });
 
@@ -763,7 +777,8 @@ export default function EventsFeedScreen() {
     ),
     [handleEventPress, handleSaveEvent, handleVenuePress, checkIsSaved]
   );
-
+  const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const keyExtractor = useCallback(
     (item: FormattedEvent) => item.id.toString(),
     []

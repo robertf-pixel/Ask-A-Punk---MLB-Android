@@ -15,11 +15,13 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { fetchSyncStatus, triggerSync, formatSyncDate } from '@/lib/api/events-api';
 import { SyncStatus } from '@/lib/types/events';
 import { useLocaleStore } from '@/lib/state/locale-store';
+import { useLocationTheme } from '@/lib/theme/location-theme';
 
-const ACCENT_COLOR = '#FF6B35';
 
 function Header() {
   const insets = useSafeAreaInsets();
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
 
   return (
     <View
@@ -42,6 +44,8 @@ function Header() {
 }
 
 function StatusIcon({ status }: { status: SyncStatus['status'] }) {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   switch (status) {
     case 'success':
       return <CheckCircle size={20} color="#22c55e" />;
@@ -67,16 +71,19 @@ function getStatusText(status: SyncStatus['status']): string {
   }
 }
 
-function getStatusColor(status: SyncStatus['status']): string {
+function getStatusColor(
+  status: SyncStatus["status"],
+  accentColor: string
+): string {
   switch (status) {
-    case 'success':
-      return '#22c55e';
-    case 'failed':
-      return '#ef4444';
-    case 'in_progress':
-      return ACCENT_COLOR;
+    case "success":
+      return "#22c55e";
+    case "failed":
+      return "#ef4444";
+    case "in_progress":
+      return accentColor;
     default:
-      return '#666';
+      return "#666";
   }
 }
 
@@ -112,6 +119,9 @@ function SettingsRow({
 }
 
 export default function SettingsScreen() {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
+
   const locale = useLocaleStore((state) => state.locale);
   const setLocale = useLocaleStore((state) => state.setLocale);
   const insets = useSafeAreaInsets();
@@ -143,7 +153,7 @@ export default function SettingsScreen() {
 
   const handleRefresh = () => {
     if (!syncMutation.isPending) {
-      syncMutation.mutate();
+      syncMutation.mutate(locale);
     }
   };
 
@@ -192,11 +202,11 @@ export default function SettingsScreen() {
                 <View className="flex-row items-center mb-4">
                   <View
                     className="w-2 h-2 rounded-full mr-2"
-                    style={{ backgroundColor: getStatusColor(syncStatus.status) }}
+                    style={{ backgroundColor: getStatusColor(syncStatus.status, ACCENT_COLOR) }}
                   />
                   <Text
                     className="text-sm font-medium"
-                    style={{ color: getStatusColor(syncStatus.status) }}
+                    style={{ color: getStatusColor(syncStatus.status, ACCENT_COLOR) }}
                   >
                     {getStatusText(syncStatus.status)}
                   </Text>

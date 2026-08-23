@@ -33,8 +33,8 @@ import * as MailComposer from 'expo-mail-composer';
 import * as DocumentPicker from 'expo-document-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { cn } from '@/lib/cn';
+import { useLocationTheme } from '@/lib/theme/location-theme';
 
-const ACCENT_COLOR = '#FF6B35';
 const RECIPIENT_EMAIL = 'itsstilloknottodrinkfanzine@hotmail.com';
 
 type FlyerAsset = {
@@ -49,6 +49,8 @@ type FeedbackState = {
 } | null;
 
 function Header() {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
 
   return (
@@ -125,6 +127,8 @@ function FeedbackBanner({
 }
 
 export default function SubmitEventScreen() {
+const { accent } = useLocationTheme();
+const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
 
   const [title, setTitle] = useState<string>('');

@@ -2,12 +2,14 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Home, Search, Settings, Heart, Plus } from 'lucide-react-native';
 import { View } from 'react-native';
+import { useLocationTheme } from '@/lib/theme/location-theme';
 
-const ACCENT_COLOR = '#FF6B35';
-const BACKGROUND_COLOR = '#0A0A0A';
-const INACTIVE_COLOR = '#666666';
 
 export default function TabLayout() {
+  const { accent, background, muted } = useLocationTheme();
+const ACCENT_COLOR = accent;
+const BACKGROUND_COLOR = background;
+const INACTIVE_COLOR = muted;
   return (
     <Tabs
       screenOptions={{

@@ -11,25 +11,45 @@ const request = async <T>(
   url: string,
   options: { method?: string; body?: string } = {}
 ): Promise<T> => {
-  const response = await fetch(`${baseUrl}${url}`, {
-    ...options,
-    headers: options.body ? { "Content-Type": "application/json" } : undefined,
-  });
-
-  // 1. Handle 204 No Content
-  if (response.status === 204) {
-    return undefined as T;
+  if (!baseUrl) {
+    throw new Error("EXPO_PUBLIC_BACKEND_URL is missing");
   }
 
-  // 2. JSON responses: parse and unwrap { data }
-  const contentType = response.headers.get("content-type");
-  if (contentType?.includes("application/json")) {
-    const json: ApiResponse<T> = await response.json();
-    return json.data;
-  }
+  const fullUrl = `${baseUrl}${url}`;
 
-  // 3. Non-JSON: return undefined
-  return undefined as T;
+  console.log("Requesting:", fullUrl);
+
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers: options.body
+        ? { "Content-Type": "application/json" }
+        : undefined,
+    });
+
+    console.log("Response status:", response.status);
+
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(`API ${response.status}: ${message}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType?.includes("application/json")) {
+      const json: ApiResponse<T> = await response.json();
+      return json.data;
+    }
+
+    throw new Error(`Expected JSON but received: ${contentType}`);
+  } catch (error) {
+    console.error("API request failed:", fullUrl, error);
+    throw error;
+  }
 };
 
 export const api = {
