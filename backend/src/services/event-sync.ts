@@ -102,12 +102,12 @@ function extractTicketUrl(onlineLocations: string[] | string): string | null {
 /**
  * Constructs the full image URL from media data
  */
-function getImageUrl(
+function getImageUrl( 
   media: GancioMedia[],
   baseUrl: string
 ): string | null {
   const firstMedia = media?.[0];
-  if (media.length > 0 && firstMedia && firstMedia.url) {
+  if (firstMedia?.url) {
     return `${baseUrl}/media/thumb/${firstMedia.url}`;
   }
   return null;
