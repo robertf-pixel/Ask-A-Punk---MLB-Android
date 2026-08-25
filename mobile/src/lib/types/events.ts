@@ -78,7 +78,7 @@ export interface GancioEvent {
 
 // Base URL for media assets (still needed for image URLs)
 export const GANCIO_BASE_URLS = {
-  magandjin: "https://brisbane.askapunk.net",
+  magandjin: "https://brisbane.askapunk.au",
   gadigal: "https://sydney.askapunk.au",
   melbourne: "https://melbourne.askapunk.net",
   "kaurna-yerta": "https://adelaide.askapunk.au",

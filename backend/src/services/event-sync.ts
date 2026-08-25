@@ -33,7 +33,7 @@ interface GancioEvent {
 }
 
 const GANCIO_BASE_URLS: Partial<Record<Locale, string>> = {
-  'magandjin': 'https://brisbane.askapunk.net',
+  'magandjin': 'https://brisbane.askapunk.au',
   'gadigal': 'https://sydney.askapunk.au',
   'melbourne': 'https://melbourne.askapunk.net',
   'kaurna yerta': 'https://adelaide.askapunk.au',
