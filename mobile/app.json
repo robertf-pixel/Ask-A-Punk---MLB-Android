@@ -1,5 +1,6 @@
 {
   "expo": {
+    
     "name": "Ask A Punk - MLB",
     "slug": "ask-a-punk-mlb",
     "scheme": "vibecode",
@@ -15,7 +16,8 @@
     },
     "android": {
       "edgeToEdgeEnabled": true,
-      "package": "com.vibecode.askapunkmlbt2bzuk"
+      "package": "com.vibecode.askapunkmlbt2bzuk",
+      "versionCode": 12
     },
     "plugins": [
       "expo-router",

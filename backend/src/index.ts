@@ -28,6 +28,27 @@ app.use(
   })
 );
 
+// App version endpoint
+app.get("/api/app-version", (c) => {
+  return c.json({
+    data: {
+      android: {
+        latestVersion: "1.13",
+        latestBuild: "12",
+        minimumBuild: "12",
+        downloadUrl: null,
+      },
+
+      ios: {
+        latestVersion: "1.13",
+        latestBuild: "12",
+        minimumBuild: "12",
+        downloadUrl: null,
+      },
+    },
+  });
+});
+
 // Logging
 app.use("*", logger());
 
