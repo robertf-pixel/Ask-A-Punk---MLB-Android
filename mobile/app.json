@@ -1,22 +1,21 @@
 {
   "expo": {
-    
     "name": "Ask A Punk - MLB",
     "slug": "ask-a-punk-mlb",
-    "scheme": "vibecode",
+    "scheme": "askapunk",
     "version": "1.13",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vibecode.askapunk-mlb-t2bzuk",
+      "bundleIdentifier": "net.askapunk.app",
       "buildNumber": "12",
       "infoPlist": {}
     },
     "android": {
       "edgeToEdgeEnabled": true,
-      "package": "com.vibecode.askapunkmlbt2bzuk",
+      "package": "net.askapunk.app",
       "versionCode": 12
     },
     "plugins": [
