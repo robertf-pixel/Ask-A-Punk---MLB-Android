@@ -89,6 +89,14 @@ export const LOCATION_THEMES: Record<
     text: "#FFFFFF",
     muted: "#A3A3A3",
   },
+
+  aotearoa: {
+    accent: "#4319ad", //my kiwi consultation informed me that this is the best purple to use for the nz theme 
+    background: "#000000",
+    surface: "#171717",
+    text: "#FFFFFF",
+    muted: "#A3A3A3",
+  }
 };
 
 export function useLocationTheme() {

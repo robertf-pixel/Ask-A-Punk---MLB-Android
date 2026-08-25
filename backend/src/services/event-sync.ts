@@ -43,6 +43,7 @@ const GANCIO_BASE_URLS: Partial<Record<Locale, string>> = {
   'central coast': 'https://centralcoast.askapunk.au',
   'south coast': 'https://southcoast.askapunk.au',
   'luitruwita': 'https://tasmania.askapunk.au',
+  'aotearoa': 'https://askapunk.nz/',
 };
 
 /**

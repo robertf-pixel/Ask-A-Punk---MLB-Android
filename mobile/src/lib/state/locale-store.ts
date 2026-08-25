@@ -16,6 +16,7 @@ export const LOCALE_OPTIONS = [
   { value: "central coast", label: "Central Coast" },
   { value: "south coast", label: "South Coast" },
   { value: "luitruwita", label: "Luitruwita / Tasmania" },
+  { value: "aotearoa", label: "Aotearoa / New Zealand" },
 ] as const;
 
 export type Locale = (typeof LOCALE_OPTIONS)[number]["value"];

@@ -9,6 +9,7 @@ export const LOCALES = [
   "central coast",
   "south coast",
   "luitruwita",
+  "aotearoa",
 ] as const;
 
 export type Locale = (typeof LOCALES)[number];

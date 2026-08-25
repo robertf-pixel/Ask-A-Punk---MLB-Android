@@ -88,6 +88,7 @@ export const GANCIO_BASE_URLS = {
   "central-coast": "https://centralcoast.askapunk.au",
   "south-coast": "https://southcoast.askapunk.au",
   lutruwita: "https://tasmania.askapunk.au",
+  aotearoa: "https://askapunk.nz/",
 } as const;
 
 export type Locale = keyof typeof GANCIO_BASE_URLS;
