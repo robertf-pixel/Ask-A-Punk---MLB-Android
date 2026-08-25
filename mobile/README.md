@@ -1,6 +1,6 @@
 # Ask A Punk Melbourne - Events App
 
-An Instagram-style mobile app for browsing upcoming punk and DIY music events in Melbourne, Australia.
+An Instagram-style mobile app for browsing upcoming punk and DIY music events in Australia and New Zealand.
 
 *App created by life.lair.regret. records*
 
@@ -13,13 +13,13 @@ An Instagram-style mobile app for browsing upcoming punk and DIY music events in
 - **Clickable Hashtags**: Tap any hashtag on an event to see all events with that tag
 - **Event Details**: Full event information with venue address, description, and ticket links
 - **Pull to Refresh**: Stay up to date with the latest events
-- **Automatic Updates**: Events sync automatically every 12 hours from Ask A Punk Melbourne
-- **Settings**: View sync status and manually trigger event refresh
-- **Dark Punk Aesthetic**: Black background with orange accents
+- **Automatic Updates**: Events sync automatically every 12 hours from Ask A Punk sites
+- **Settings**: View sync status and manually trigger event refresh as well as set default location
+- **Dark Punk Aesthetic**: Black background with location specific accents
 
 ## Data Source
 
-Event data is sourced from [Ask A Punk Melbourne](https://melbourne.askapunk.net/), a DIY hardcore and punk events listing site powered by [Gancio](https://gancio.org/).
+Event data is sourced from [Ask A Punk sites](https://askapunk.au/guides), a DIY hardcore and punk events listing site powered by [Gancio](https://gancio.org/).
 
 Events are cached in the backend database and automatically refreshed every 12 hours to ensure the app stays up to date.
 

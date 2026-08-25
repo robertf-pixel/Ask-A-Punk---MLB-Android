@@ -345,7 +345,7 @@ const ACCENT_COLOR = accent;
                       paddingVertical: 10,
                     }}
                   >
-                    <Text
+                    <Text numberOfLines={1}
                       style={{
                         color: locale === item.value ? ACCENT_COLOR : '#aaa',
                         fontWeight: '600',

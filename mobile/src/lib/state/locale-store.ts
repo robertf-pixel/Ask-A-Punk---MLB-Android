@@ -8,13 +8,13 @@ import {
 export const LOCALE_OPTIONS = [
   { value: "magandjin", label: "Magandjin / Brisbane" },
   { value: "gadigal", label: "Gadigal / Sydney" },
-  { value: "melbourne", label: "Melbourne" },
+  { value: "melbourne", label: "Naarm / Melbourne" },
   { value: "kaurna yerta", label: "Kaurna Yerta / Adelaide" },
   { value: "boorloo", label: "Boorloo / Perth" },
-  { value: "canberra", label: "Canberra" },
-  { value: "north coast", label: "North Coast" },
-  { value: "central coast", label: "Central Coast" },
-  { value: "south coast", label: "South Coast" },
+  { value: "canberra", label: "Canberra / ACT" },
+  { value: "north coast", label: "Byron / Coffs Harbour" },
+  { value: "central coast", label: "Newcastle / Gosford" },
+  { value: "south coast", label: "Wollongong / Batemans" },
   { value: "luitruwita", label: "Luitruwita / Tasmania" },
   { value: "aotearoa", label: "Aotearoa / New Zealand" },
 ] as const;
