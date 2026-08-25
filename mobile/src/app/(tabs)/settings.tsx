@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { RefreshCw, Calendar, Clock, CheckCircle, XCircle, Info, Shield, Mail, ChevronRight, Globe } from 'lucide-react-native';
+import { RefreshCw, Calendar, Clock, CheckCircle, XCircle, Info, Shield, Mail, ChevronRight, Globe, Check, MapPin } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { fetchSyncStatus, triggerSync, formatSyncDate } from '@/lib/api/events-api';
 import { SyncStatus } from '@/lib/types/events';
-import { useLocaleStore } from '@/lib/state/locale-store';
+import { getLocaleLabel, LOCALE_OPTIONS, useLocaleStore } from '@/lib/state/locale-store';
 import { useLocationTheme } from '@/lib/theme/location-theme';
 
 
@@ -127,6 +127,7 @@ const ACCENT_COLOR = accent;
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const [localePickerOpen, setLocalePickerOpen] = useState(false);
 
   const {
     data: syncStatus,
@@ -291,6 +292,66 @@ const ACCENT_COLOR = accent;
             </Pressable>
           </View>
         </Animated.View>
+
+
+        {/* Default Location Section */}
+<Animated.View entering={FadeInDown.springify()}>
+  <Text className="text-neutral-500 text-xs font-bold uppercase tracking-wider mb-2 ml-1">
+    Events
+  </Text>
+
+  <View className="bg-neutral-900 rounded-2xl px-4 mb-4">
+    <SettingsRow
+      icon={<MapPin size={18} color={ACCENT_COLOR} />}
+      label="Default Location"
+      value={getLocaleLabel(locale)}
+      onPress={() => setLocalePickerOpen((open) => !open)}
+    />
+
+    {localePickerOpen && (
+      <Animated.View
+        entering={FadeInDown.duration(200)}
+        className="border-t border-neutral-800 pb-2"
+      >
+        {LOCALE_OPTIONS.map((option, index) => {
+          const selected = locale === option.value;
+
+          return (
+            <Animated.View
+              key={option.value}
+              entering={FadeInDown.delay(index * 30).duration(150)}
+            >
+              <Pressable
+                onPress={() => {
+                  setLocale(option.value);
+                  setLocalePickerOpen(false);
+                }}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.7 : 1,
+                })}
+                className="flex-row items-center py-3"
+              >
+                <Text
+                  className="flex-1 text-base"
+                  style={{
+                    color: selected ? ACCENT_COLOR : "#FFFFFF",
+                    fontWeight: selected ? "600" : "400",
+                  }}
+                >
+                  {option.label}
+                </Text>
+
+                {selected && (
+                  <Check size={18} color={ACCENT_COLOR} />
+                )}
+              </Pressable>
+            </Animated.View>
+          );
+        })}
+      </Animated.View>
+    )}
+  </View>
+</Animated.View>
 
         {/* Privacy & Support Section */}
         <Animated.View entering={FadeInDown.delay(100).springify()}>

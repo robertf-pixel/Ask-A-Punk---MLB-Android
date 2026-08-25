@@ -11,7 +11,7 @@ export const LOCATION_THEMES: Record<
   }
 > = {
   magandjin: {
-    accent: "#FF4D4D", // Red
+    accent: "#FF4D4D",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -19,7 +19,7 @@ export const LOCATION_THEMES: Record<
   },
 
   gadigal: {
-    accent: "#FF8C00", // Orange
+    accent: "#FF8C00",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -27,7 +27,7 @@ export const LOCATION_THEMES: Record<
   },
 
   melbourne: {
-    accent: "#FFED00", // Yellow
+    accent: "#FFED00",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -35,7 +35,7 @@ export const LOCATION_THEMES: Record<
   },
 
   "kaurna yerta": {
-    accent: "#22C55E", // Green
+    accent: "#22C55E",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -43,7 +43,7 @@ export const LOCATION_THEMES: Record<
   },
 
   boorloo: {
-    accent: "#3B82F6", // Blue
+    accent: "#3B82F6",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -51,7 +51,7 @@ export const LOCATION_THEMES: Record<
   },
 
   canberra: {
-    accent: "#A855F7", // Purple
+    accent: "#A855F7",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
@@ -83,7 +83,7 @@ export const LOCATION_THEMES: Record<
   },
 
   luitruwita: {
-    accent: "#A66A4C", // Progress Pride brown
+    accent: "#A66A4C",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",

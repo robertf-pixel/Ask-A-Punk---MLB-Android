@@ -1,4 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
+import {
+  createJSONStorage,
+  persist,
+} from "zustand/middleware";
 
 export const LOCALE_OPTIONS = [
   { value: "magandjin", label: "Magandjin / Brisbane" },
@@ -26,7 +31,15 @@ interface LocaleStore {
   setLocale: (locale: Locale) => void;
 }
 
-export const useLocaleStore = create<LocaleStore>((set) => ({
-  locale: "melbourne",
-  setLocale: (locale) => set({ locale }),
-}));
+export const useLocaleStore = create<LocaleStore>()(
+  persist(
+    (set) => ({
+      locale: "melbourne",
+      setLocale: (locale) => set({ locale }),
+    }),
+    {
+      name: "ask-a-punk-locale",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
