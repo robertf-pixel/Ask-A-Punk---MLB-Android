@@ -77,6 +77,23 @@ export interface GancioEvent {
 }
 
 // Base URL for media assets (still needed for image URLs)
-export const GANCIO_BASE_URL = 'https://melbourne.askapunk.net';
-export const GANCIO_MEDIA_URL = `${GANCIO_BASE_URL}/media`;
-export const GANCIO_API_URL = `${GANCIO_BASE_URL}/api/events`;
+export const GANCIO_BASE_URLS = {
+  magandjin: "https://brisbane.askapunk.net",
+  gadigal: "https://sydney.askapunk.au",
+  melbourne: "https://melbourne.askapunk.net",
+  "kaurna-yerta": "https://adelaide.askapunk.au",
+  boorloo: "https://perth.askapunk.au",
+  canberra: "https://canberra.askapunk.au",
+  "north-coast": "https://northcoast.askapunk.au",
+  "central-coast": "https://centralcoast.askapunk.au",
+  "south-coast": "https://southcoast.askapunk.au",
+  lutruwita: "https://tasmania.askapunk.au",
+} as const;
+
+export type Locale = keyof typeof GANCIO_BASE_URLS;
+
+export const LOCALES = Object.keys(GANCIO_BASE_URLS) as Locale[];
+
+export function isLocale(value: string): value is Locale {
+  return value in GANCIO_BASE_URLS;
+}

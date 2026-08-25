@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { prisma } from "../db";
 import { getLastSyncStatus } from "../services/event-sync";
 import { triggerManualSync } from "../services/scheduler";
-import type { Locale } from "../services/event-sync";
+import { isLocale, LOCALES } from "../types/locale";
 
 const eventsRouter = new Hono();
 
@@ -10,7 +10,21 @@ const eventsRouter = new Hono();
  * GET /api/events - Return all events (upcoming and past)
  */
 eventsRouter.get("/", async (c) => {
-  const locale = c.req.query("locale") ?? "melbourne";
+  const requestedLocale = c.req.query("locale");
+
+  if (!requestedLocale || !isLocale(requestedLocale)) {
+    return c.json(
+      {
+        error: {
+          message: "A valid locale query parameter is required",
+          validLocales: LOCALES,
+        },
+      },
+      400
+    );
+  }
+
+  const locale = requestedLocale;
 
   console.log("EVENTS REQUESTED FOR:", locale);
 
@@ -57,10 +71,21 @@ eventsRouter.get("/status", async (c) => {
  * POST /api/events/sync - Manually trigger sync
  */
 eventsRouter.post("/sync", async (c) => {
-  const locale =
-    (c.req.query("locale") ?? "melbourne") as Locale;
+  const requestedLocale = c.req.query("locale");
 
-  const result = await triggerManualSync(locale);
+  if (!requestedLocale || !isLocale(requestedLocale)) {
+    return c.json(
+      {
+        error: {
+          message: "A valid locale is required",
+          validLocales: LOCALES,
+        },
+      },
+      400
+    );
+  }
+
+  const result = await triggerManualSync(requestedLocale);
 
   if (result.success) {
     return c.json({
@@ -81,7 +106,6 @@ eventsRouter.post("/sync", async (c) => {
     500
   );
 });
-
 /**
  * GET /api/events/:id - Return single event
  */

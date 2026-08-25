@@ -1,6 +1,6 @@
 import cron, { type ScheduledTask } from "node-cron";
 import { syncEvents, syncIfStale } from "./event-sync";
-import { LOCALES } from "../types/locale";
+import { LOCALES, type Locale } from "../types/locale";
 
 let scheduledTask: ScheduledTask | null = null;
 
@@ -52,7 +52,7 @@ export function stopScheduler(): void {
  * Manually trigger a sync
  */
 export async function triggerManualSync(
-  locale: 'melbourne' | 'sydney' | 'wollongong' | 'canberra'
+  locale: Locale
 ): Promise<{
   success: boolean;
   eventCount: number;

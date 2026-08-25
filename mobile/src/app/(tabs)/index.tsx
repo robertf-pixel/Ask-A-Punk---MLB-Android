@@ -36,7 +36,12 @@ import { BackendEvent, FormattedEvent } from '@/lib/types/events';
 import { cn } from '@/lib/cn';
 import { useSavedEventsStore } from '@/lib/state/saved-events-store';
 import { ClickableTag } from '@/components/ClickableTag';
-import { Locale, useLocaleStore } from '@/lib/state/locale-store';
+import {
+  LOCALE_OPTIONS,
+  getLocaleLabel,
+  useLocaleStore,
+  type Locale,
+} from "@/lib/state/locale-store";
 import { useLocationTheme } from '@/lib/theme/location-theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -328,16 +333,11 @@ const ACCENT_COLOR = accent;
                   zIndex: 999,
                 }}
               >
-                {[
-                  { value: 'melbourne', label: 'Melbourne' },
-                  { value: 'sydney', label: 'Sydney' },
-                  { value: 'wollongong', label: 'Wollongong' },
-                  { value: 'canberra', label: 'Canberra' },
-                ].map((item) => (
+                {LOCALE_OPTIONS.map((item) => (
                   <Pressable
                     key={item.value}
                     onPress={() => {
-                      onLocaleChange(item.value as Locale);
+                      onLocaleChange(item.value);
                       setLocaleMenuOpen(false);
                     }}
                     style={{
@@ -580,12 +580,6 @@ const ACCENT_COLOR = accent;
 export default function EventsFeedScreen() {
   const locale = useLocaleStore((state) => state.locale);
   const setLocale = useLocaleStore((state) => state.setLocale);
-  const LOCALES: { value: Locale; label: string }[] = [
-    { value: 'melbourne', label: 'Melbourne' },
-    { value: 'sydney', label: 'Sydney' },
-    { value: 'wollongong', label: 'Wollongong' },
-    { value: 'canberra', label: 'Canberra' },
-  ];
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();

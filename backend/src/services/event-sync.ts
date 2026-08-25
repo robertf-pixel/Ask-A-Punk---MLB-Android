@@ -1,5 +1,6 @@
 import { prisma } from "../db";
 import { fetch } from 'undici';
+import type { Locale } from "../types/locale";
 
 // Gancio API types based on actual response
 interface GancioMedia {
@@ -31,17 +32,17 @@ interface GancioEvent {
   place: GancioPlace;
 }
 
-export type Locale =
-  | 'melbourne'
-  | 'sydney'
-  | 'wollongong'
-  | 'canberra';
-
 const GANCIO_BASE_URLS: Partial<Record<Locale, string>> = {
-  melbourne: 'https://melbourne.askapunk.net',
-  sydney: 'https://sydney.askapunk.au',
-  wollongong: 'https://wollongong.askapunk.au',
-  canberra: 'https://canberra.askapunk.au',
+  'magandjin': 'https://brisbane.askapunk.net',
+  'gadigal': 'https://sydney.askapunk.au',
+  'melbourne': 'https://melbourne.askapunk.net',
+  'kaurna yerta': 'https://adelaide.askapunk.au',
+  'boorloo': 'https://perth.askapunk.au',
+  'canberra': 'https://canberra.askapunk.au',
+  'north coast': 'https://northcoast.askapunk.au',
+  'central coast': 'https://centralcoast.askapunk.au',
+  'south coast': 'https://southcoast.askapunk.au',
+  'luitruwita': 'https://tasmania.askapunk.au',
 };
 
 /**

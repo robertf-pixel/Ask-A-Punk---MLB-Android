@@ -325,7 +325,7 @@ const ACCENT_COLOR = accent;
           <View className="bg-neutral-900 rounded-2xl p-5">
             <Text className="text-white font-bold text-lg mb-3">About</Text>
             <Text className="text-neutral-400 text-sm leading-5">
-              This app displays upcoming punk and alternative music events in Melbourne,
+              This app displays upcoming punk and alternative music events in Oceania, including Australia and New Zealand.
               sourced from the Ask A Punk community calendar.
             </Text>
 
