@@ -440,7 +440,7 @@ const ACCENT_COLOR = accent;
         <Animated.View entering={FadeInDown.delay(300).springify()}>
           <View className="mt-6 items-center">
             <Text className="text-neutral-700 text-xs">
-              ASK A PUNK v1.13
+              ASK A PUNK v1.12
             </Text>
           </View>
         </Animated.View>
