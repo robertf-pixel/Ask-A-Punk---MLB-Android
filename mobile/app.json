@@ -9,7 +9,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "net.askapunk.app",
+      "bundleIdentifier": "com.vibecode.askapunk-mlb-t2bzuk",
       "buildNumber": "12",
       "infoPlist": {}
     },
