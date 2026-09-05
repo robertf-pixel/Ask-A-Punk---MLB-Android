@@ -14,6 +14,7 @@
       "distribution": "internal"
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_EXAMPLE_ENV_VAR": "test",
         "BACKEND_URL": "https://ask-a-punk-mlb-android-production.up.railway.app",
@@ -23,8 +24,7 @@
         "distribution": "store"
       },
       "android": {
-        "distribution": "store",
-        "buildType": "apk"
+        "distribution": "store"
       }
     }
   },
