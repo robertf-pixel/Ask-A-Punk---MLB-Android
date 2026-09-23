@@ -11,7 +11,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.vibecode.askapunk-mlb-t2bzuk",
       "buildNumber": "12",
-      "infoPlist": {}
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "edgeToEdgeEnabled": true,
