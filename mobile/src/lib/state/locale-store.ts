@@ -6,17 +6,17 @@ import {
 } from "zustand/middleware";
 
 export const LOCALE_OPTIONS = [
-  { value: "magandjin", label: "Magandjin / Brisbane" },
-  { value: "gadigal", label: "Gadigal / Sydney" },
-  { value: "melbourne", label: "Naarm / Melbourne" },
-  { value: "kaurna yerta", label: "Kaurna Yerta / Adelaide" },
-  { value: "boorloo", label: "Boorloo / Perth" },
+  { value: "magandjin", label: "Brisbane / Magandjin" },
+  { value: "gadigal", label: "Sydney / Gadigal" },
+  { value: "melbourne", label: "Melbourne / Naarm" },
+  { value: "kaurna yerta", label: "Adelaide / Kaurna Yerta" },
+  { value: "boorloo", label: "Perth / Boorloo" },
   { value: "canberra", label: "Canberra / ACT" },
   { value: "north coast", label: "Byron / Coffs Harbour" },
   { value: "central coast", label: "Newcastle / Gosford" },
   { value: "south coast", label: "Wollongong / Batemans" },
-  { value: "luitruwita", label: "Luitruwita / Tasmania" },
-  { value: "aotearoa", label: "Aotearoa / New Zealand" },
+  { value: "luitruwita", label: "Tasmania / Lutruwita" },
+  { value: "aotearoa", label: "New Zealand / Aotearoa" },
 ] as const;
 
 export type Locale = (typeof LOCALE_OPTIONS)[number]["value"];

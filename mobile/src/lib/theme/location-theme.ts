@@ -27,7 +27,7 @@ export const LOCATION_THEMES: Record<
   },
 
   melbourne: {
-    accent: "#FFED00",
+    accent: "#F2C94C",
     background: "#000000",
     surface: "#171717",
     text: "#FFFFFF",
